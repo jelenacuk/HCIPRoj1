@@ -28,3 +28,22 @@ C:\Users\Mile\Desktop\HCI\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.csproj.Gene
 C:\Users\Mile\Desktop\HCI\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.csproj.CoreCompileInputs.cache
 C:\Users\Mile\Desktop\HCI\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.exe
 C:\Users\Mile\Desktop\HCI\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.pdb
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\bin\Debug\HCIProj.exe.config
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.exe
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.pdb
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\bin\Debug\HCIProj.exe
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\bin\Debug\HCIProj.pdb
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\bin\Debug\Newtonsoft.Json.dll
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\bin\Debug\System.Net.Http.Formatting.dll
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\bin\Debug\Newtonsoft.Json.pdb
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\bin\Debug\Newtonsoft.Json.xml
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\bin\Debug\System.Net.Http.Formatting.xml
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.csprojResolveAssemblyReference.cache
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\MainWindow.g.cs
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\App.g.cs
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj_MarkupCompile.cache
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj_MarkupCompile.lref
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\MainWindow.baml
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.g.resources
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.Properties.Resources.resources
+D:\TRECA GODINA\HCI\HCIProject\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.csproj.GenerateResource.Cache

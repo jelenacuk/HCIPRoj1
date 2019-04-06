@@ -65,7 +65,7 @@
             </StackPanel>
             
             <TabControl Grid.Column="1" >
-                <TabItem  Header="Trenutno" >
+                <TabItem  Header="Trenutno" GotFocus ="Load_CurrentWeather"  >
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -75,16 +75,16 @@
                             <TextBlock Text="Izmereno u 12:00"></TextBlock>
                             <Button Grid.Column="1" Margin="10 0 0 0" Content="Osvezi"></Button>
                         </Grid>
-                        <TextBlock Text="Novi Sad" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock x:Name ="lokacija_" Text="Novi Sad" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"></TextBlock>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="30" Text="24C"></TextBlock>
+                            <TextBlock Name="temperatura" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="30" Text="24C"></TextBlock>
                             <Image VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" Grid.Column="1" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
                         </Grid>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="Min 12C / Max 24C"></TextBlock>
+                        <TextBlock Name="minMax" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="Min 12C / Max 24C"></TextBlock>
 
                     </StackPanel>
                     
