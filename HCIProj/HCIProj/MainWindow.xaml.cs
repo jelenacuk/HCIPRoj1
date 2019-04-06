@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -30,8 +31,33 @@ namespace HCIProj
         private int _temp;
         private string _icon;
         private string _omiljeni;
+        private DateTime _lastUpdate;
+        private string _lastupdatestring;
+        public DateTime LastUpdateDate {
+            get {
+                return _lastUpdate;
+            }
+            set {
+                if (value != _lastUpdate)
+                {
+                    _lastUpdate = value;
+                    OnPropertyChanged("LastUpdate");
+                }
+            }
+        }
+        public string LastUpdateString {
+            get {
+                return _lastupdatestring;
+            }
+            set {
+                if (value != _lastupdatestring)
+                {
+                   _lastupdatestring = value;
+                    OnPropertyChanged("LastUpdateString");
+                }
+            }
+        }
 
-      
         public ObservableCollection<Lokacija> Lokacije { get; set; }
         public HourlyForecast tempPoSatima;
 
@@ -137,8 +163,11 @@ namespace HCIProj
                     break;
                 }
             }
+            LastUpdateDate = DateTime.Now;
             this.LokacijeListaEl.ItemsSource = Lokacije;
-            
+            //Thread auto = new Thread(AutoRefresh);
+            Task t = new Task(doWork);
+            t.Start();
             //tempPoSatima = new HourlyForecast();
         }
 
@@ -179,11 +208,14 @@ namespace HCIProj
                 MaxTemp = max_temp;
                 Icon_ = result.weather[0].icon;
             }
+            LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+
         }
         private void Load_CurrentWeather(object sender, RoutedEventArgs e)
         {
 
             LoadCurrent();
+
         }
 
         private void Load_HourlyForecast(object sender, RoutedEventArgs e)
@@ -216,6 +248,8 @@ namespace HCIProj
                 }
                 danas.ItemsSource = tempPoSatima.list.Take(12);
             }
+            LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+
         }
 
         private void WriteLokacije()
@@ -232,6 +266,9 @@ namespace HCIProj
             TrenutnaLokacija = ((TextBlock)sender).Text;
             LoadCurrent();
             LoadHourly();
+            LastUpdateDate = DateTime.Now;
+            LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -285,12 +322,35 @@ namespace HCIProj
                 TrenutnaLokacija = Lokacije.First().Naziv;
                 LoadCurrent();
                 LoadHourly();
+                LastUpdateDate = DateTime.Now;
+                LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+
             }
             else
             {
                 TrenutnaLokacija = "";
             }
             WriteLokacije();
+
+        }
+        public void doWork()
+        {
+            while (true)
+            {
+                DateTime last = LastUpdateDate;
+                
+                    LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+                if (last.AddMinutes(10) >= DateTime.Now)
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        LoadCurrent();
+                        LoadHourly();
+                    });
+                }
+                                
+                Thread.Sleep(600000);
+            }
 
         }
     }

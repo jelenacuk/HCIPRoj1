@@ -60,7 +60,7 @@
                                 <ColumnDefinition Width="2*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Izmereno u 12:00"></TextBlock>
+                            <TextBlock Text="{Binding LastUpdateString}"></TextBlock>
                             <Button Grid.Column="1" Margin="10 0 0 0" Content="Osvezi"></Button>
                         </Grid>
                         <TextBlock x:Name ="lokacija_" Text="{Binding TrenutnaLokacija}" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"></TextBlock>
@@ -96,7 +96,7 @@
                                     <ColumnDefinition Width="2*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Izmereno u 12:00"></TextBlock>
+                                <TextBlock Text="{Binding LastUpdateString}"></TextBlock>
                                 <Button Grid.Column="1" Margin="10 0 0 0" Content="Osvezi"></Button>
                             </Grid>
                             <ListView Name ="danas"  HorizontalContentAlignment="Stretch">
