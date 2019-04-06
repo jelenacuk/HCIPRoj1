@@ -77,7 +77,7 @@
                     </StackPanel>
                     
                 </TabItem>
-                <TabItem GotFocus="TabItem_GotFocus" Header="Danas">
+                <TabItem GotFocus="Load_HourlyForecast" Header="Danas">
                     <ScrollViewer>
                         <StackPanel Name="TemperaturaDanasStack">
                             <TextBlock Text="Novi Sad" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18"></TextBlock>
@@ -89,8 +89,11 @@
                                 <TextBlock Text="Izmereno u 12:00"></TextBlock>
                                 <Button Grid.Column="1" Margin="10 0 0 0" Content="Osvezi"></Button>
                             </Grid>
-                            <ListView ItemsSource="{Binding temperaturaDanasList}" HorizontalContentAlignment="Stretch">
-                                <ListView.ItemTemplate>
+                            <ListView Name ="danas" ItemsSource="{Binding list}" HorizontalContentAlignment="Stretch">
+                                <ListView.DataContext>
+                                    <local:HourlyForecast/>
+                                </ListView.DataContext>
+                                <ListView.ItemTemplate >
                                     <DataTemplate>
                                         <Grid Margin="30 30 0 0">
                                             <Grid.ColumnDefinitions>
@@ -98,8 +101,8 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding Vreme}"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding Trenutno}"/>
+                                            <TextBlock Text="snsjn"/>
+                                            <TextBlock Grid.Column="1" Text="dhsjdhj"/>
                                             <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"/>
                                         </Grid>
                                     </DataTemplate>

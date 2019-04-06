@@ -27,7 +27,12 @@ namespace HCIProj
         private int _minTemp;
         private int _maxTemp;
         private int _temp;
+
+      
         public ObservableCollection<string> Lokacije { get; set; }
+        public HourlyForecast tempPoSatima;
+
+
         public String TrenutnaLokacija {
             get {
                 return _trenutnaLokacija;
@@ -80,6 +85,8 @@ namespace HCIProj
         {
             InitializeComponent();
             this.DataContext = this;
+
+
             Temp = 0;
             MinTemp = 0;
             MaxTemp = 0;
@@ -92,6 +99,7 @@ namespace HCIProj
             l2.Neomiljena = true;
             Lokacije.Add("Novi Sad");
             Lokacije.Add("Beograd");
+            //tempPoSatima = new HourlyForecast();
         }
 
         #region PropertyChangedNotifier
@@ -132,8 +140,30 @@ namespace HCIProj
             }
         }
 
-        private void TabItem_GotFocus(object sender, RoutedEventArgs e)
+        private void Load_HourlyForecast(object sender, RoutedEventArgs e)
         {
+            using (WebClient webClient = new WebClient())
+            {
+                string url = "http://api.openweathermap.org/data/2.5/forecast/hourly?q=London,us&mode=xml,uk&APPID=8e17202912490c577a70504fd76979f3";
+                string json = webClient.DownloadString(url);
+                var result = JsonConvert.DeserializeObject<HourlyForecast>(json);
+
+                tempPoSatima = result;
+                
+
+                foreach (var w in tempPoSatima.list)
+                {
+                    string[] dateAndTime = w.dt_txt.Split(' ');
+                    string time = dateAndTime[1].Substring(0, 5);
+                    w.dt_txt = time;
+
+                    double tempToDouble = Convert.ToDouble(w.main.temp);
+                    double celzijusi = tempToDouble - 273.15;
+                    int temp = Convert.ToInt32(celzijusi);
+                    w.main.temp = temp.ToString() + "˚C";
+                }
+                //MessageBox.Show(tempPoSatima.list[0].main.temp);
+            }
 
         }
 
