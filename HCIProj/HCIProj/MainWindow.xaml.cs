@@ -27,6 +27,7 @@ namespace HCIProj
         private int _minTemp;
         private int _maxTemp;
         private int _temp;
+        private string _icon;
 
       
         public ObservableCollection<string> Lokacije { get; set; }
@@ -81,6 +82,22 @@ namespace HCIProj
                 }
             }
         }
+
+        public string Icon_
+        {
+            get
+            {
+                return _icon;
+            }
+            set
+            {
+                if (value != _icon)
+                {
+                    _icon = value;
+                    OnPropertyChanged("Icon_");
+                }
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -129,6 +146,8 @@ namespace HCIProj
                 var cTemp = output.main.temp;
                 var min = output.main.temp_min;
                 var max = output.main.temp_max;
+                result.weather[0].icon = "http://openweathermap.org/img/w/" + result.weather[0].icon + ".png";
+                
 
                 int temp = Convert.ToInt32(Convert.ToDouble(cTemp) - 273.15);
                 int min_temp = Convert.ToInt32(Convert.ToDouble(min) - 273.15);
@@ -137,6 +156,7 @@ namespace HCIProj
                 Temp = temp;
                 MinTemp = min_temp;
                 MaxTemp = max_temp;
+                Icon_ = result.weather[0].icon;
             }
         }
 
@@ -144,7 +164,7 @@ namespace HCIProj
         {
             using (WebClient webClient = new WebClient())
             {
-                string url = "http://api.openweathermap.org/data/2.5/forecast/hourly?q=London,us&mode=xml,uk&APPID=8e17202912490c577a70504fd76979f3";
+                string url = "http://api.openweathermap.org/data/2.5/forecast/hourly?q=London,us&units=metric&mode=xml,uk&APPID=8e17202912490c577a70504fd76979f3";
                 string json = webClient.DownloadString(url);
                 var result = JsonConvert.DeserializeObject<HourlyForecast>(json);
 
@@ -157,12 +177,12 @@ namespace HCIProj
                     string time = dateAndTime[1].Substring(0, 5);
                     w.dt_txt = time;
 
-                    double tempToDouble = Convert.ToDouble(w.main.temp);
-                    double celzijusi = tempToDouble - 273.15;
-                    int temp = Convert.ToInt32(celzijusi);
-                    w.main.temp = temp.ToString() + "˚C";
+                    string[] temp = w.main.temp.Split('.');
+                    double tempToDouble = Double.Parse(w.main.temp);
+                    w.main.temp = temp[0] + "˚C";
+                    w.weather[0].icon = "http://openweathermap.org/img/w/" + w.weather[0].icon + ".png";
                 }
-                //MessageBox.Show(tempPoSatima.list[0].main.temp);
+                danas.ItemsSource = tempPoSatima.list.Take(12);
             }
 
         }

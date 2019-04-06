@@ -16,9 +16,17 @@ namespace HCIProj
         public string temp { get; set; }
     }
 
+    public class weather
+    {
+        public string icon { get; set; }
+    }
+
     public class list
     {
         public string dt_txt { get; set; }
         public main main { get; set; }
+        public List<weather> weather { get; set; }
     }
+
+    
 }
