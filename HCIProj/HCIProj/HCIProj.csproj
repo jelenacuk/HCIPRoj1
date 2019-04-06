@@ -65,6 +65,7 @@
     </ApplicationDefinition>
     <Compile Include="HourlyForecast.cs" />
     <Compile Include="Lokacija.cs" />
+    <Compile Include="NextFiveDays.cs" />
     <Compile Include="WeatherInfo.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

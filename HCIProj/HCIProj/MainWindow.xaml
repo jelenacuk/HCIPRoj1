@@ -121,22 +121,40 @@
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
-                <TabItem Header="Narednih 5 dana">
+                <TabItem Header="Narednih 5 dana" GotFocus ="Load_NextFiveDays" >
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <TextBlock Text="{Binding TrenutnaLokacija}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18"></TextBlock>
-                            <ListView HorizontalContentAlignment="Stretch">
-                                <ListView.ItemTemplate>
+                            <Grid Margin="30 30 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Day of the week"/>
+                                <TextBlock Grid.Column="1" Text="Min temperature"/>
+                                <TextBlock Grid.Column="2" Text="Max temperature"/>
+                                <TextBlock Grid.Column="3" Text="Weather"/>
+                            </Grid>
+                            <ListView Name ="nextFD"  HorizontalContentAlignment="Stretch">
+                                <ListView.DataContext>
+                                    <local:HourlyForecast/>
+                                </ListView.DataContext>
+                                <ListView.ItemTemplate >
                                     <DataTemplate>
-                                        <Grid Margin="40 40 2 2">
+                                        <Grid Margin="30 30 0 0">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Ponedeljak"></TextBlock>
-                                            <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                            <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
+                                            <TextBlock Text="{Binding main.dayOfWeek}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding main.temp_min}"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding main.temp_max}"/>
+                                            <Image Grid.Column="3" Width="40" Source="{Binding weather[0].icon}"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>

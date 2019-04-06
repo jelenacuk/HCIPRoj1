@@ -252,6 +252,84 @@ namespace HCIProj
 
         }
 
+        private void Load_NextFiveDays(object sender, RoutedEventArgs e)
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                string url = "http://api.openweathermap.org/data/2.5/forecast?q=" + TrenutnaLokacija + "&APPID=8e17202912490c577a70504fd76979f3&units=metric";
+                string json = webClient.DownloadString(url);
+                var result = JsonConvert.DeserializeObject<NextFiveDays.weatherForecast>(json);
+
+                NextFiveDays.weatherForecast output = result;
+                NextFiveDays.weatherForecast nfd = new NextFiveDays.weatherForecast();
+                // Algoritam za pronalazenje narednih 5 dana i njihove min, maks temperature.
+
+                nfd.list = new ObservableCollection<NextFiveDays.list>();
+                var today = (new DateTime(1970, 1, 1)).AddSeconds(output.list[0].dt);
+                double nextDayMin = -1000;
+                double nextDayMax = -1000;
+                string optimalWeather = "";
+                string dayOfWeek = "";
+
+                // Trazimo narednih 5 dana, za to koristimo uporedjivanje sa danasnjim danom + i.
+                for (int i = 1; i < 6; i++)
+                {
+
+                    // Prolazimo kroz sve dane trazeci prvu instancu sledeceg dana.
+                    foreach (NextFiveDays.list l in output.list)
+                    {
+                        var nextDate = (new DateTime(1970, 1, 1)).AddSeconds(l.dt);
+                        if (nextDate.Day == today.Day + i)
+                        {
+                            nextDayMin = l.main.temp_min;
+                            nextDayMax = l.main.temp_max;
+                            dayOfWeek = nextDate.DayOfWeek.ToString();
+                            break;
+                        }
+                    }
+
+                    // Kada smo nasli sledeci dan, prolazimo ponovo kroz listu proveravajuci min, max tog dana.
+                    foreach (NextFiveDays.list l in output.list)
+                    {
+                        var nextDate = (new DateTime(1970, 1, 1)).AddSeconds(l.dt);
+                        if (nextDate.Day == today.Day + i)
+                        {
+                            if (l.main.temp_min < nextDayMin)
+                            {
+                                nextDayMin = l.main.temp_min;
+                            }
+                            if (l.main.temp_max > nextDayMax)
+                            {
+                                nextDayMax = l.main.temp_max;
+                                optimalWeather = l.weather[0].icon;
+                            }
+                        }
+                        else if (nextDate.Day > today.Day + i)
+                        {
+                            break;
+                        }
+                    }
+
+                    // Dodavanje novog dana u listu.
+                    NextFiveDays.list li = new NextFiveDays.list();
+                    NextFiveDays.main main = new NextFiveDays.main();
+                    NextFiveDays.weather w = new NextFiveDays.weather();
+                    main.temp_min = nextDayMin;
+                    main.temp_max = nextDayMax;
+                    main.dayOfWeek = dayOfWeek;
+                    w.icon = optimalWeather;
+                    li.main = main;
+                    li.weather = new List<NextFiveDays.weather>();
+                    li.weather.Add(w);
+
+
+                    nfd.list.Add(li);
+                }
+                nextFD.ItemsSource = nfd.list;
+            }
+
+        }
+
         private void WriteLokacije()
         {
             using (StreamWriter writer = new StreamWriter("Lokacije.json"))
