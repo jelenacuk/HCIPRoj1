@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" MinWidth="250" MinHeight="200"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    </Window.Resources>
     <Border Padding="10">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -20,26 +23,33 @@
                         <ColumnDefinition Width="2*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="Unesi Lokaciju"></TextBox>
-                    <Button Grid.Column="1" Content="Dodaj"></Button>
+                    <TextBox Name="TrenutnaLokacijaUnos" Text="Unesi Lokaciju"></TextBox>
+                    <Button Grid.Column="1" Content="Dodaj" Click="Button_Click"></Button>
                 </Grid>
-
-                <ListView ItemsSource="{Binding Path=Lokacije}" HorizontalContentAlignment="Stretch">
+                <TextBlock FontStyle="Italic" Text="{Binding Omiljeni}"></TextBlock>
+                <ListView Name="LokacijeListaEl" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Lokacije}" Margin="0 20 0 0" >
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid  Margin=" 0 0 2 2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="5*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="tekst" MouseDown="TextBlock_MouseDown"/>
-                                <Button Grid.Column="1" Content="Obrisi"/>
-                                <Button Margin="3 0 0 0 " Grid.Column="2" Content="Omiljeno" Visibility="Visible" />
+                                <TextBlock Text="{Binding Naziv}" MouseDown="TextBlock_MouseDown"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <StackPanel>
+                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Margin="0 50 0 0" Text="{Binding TrenutnaLokacija}"></TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Obrisi" Click="Button_Click_Obrisi"/>
+                        <Button Margin="3 0 0 0 " Grid.Column="1" Content="Omiljeno" Click="Button_Click_Omiljeno"/>
+                    </Grid>
+                </StackPanel>
             </StackPanel>
             
             <TabControl Grid.Column="1" >
@@ -53,7 +63,7 @@
                             <TextBlock Text="Izmereno u 12:00"></TextBlock>
                             <Button Grid.Column="1" Margin="10 0 0 0" Content="Osvezi"></Button>
                         </Grid>
-                        <TextBlock x:Name ="lokacija_" Text="Novi Sad" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock x:Name ="lokacija_" Text="{Binding TrenutnaLokacija}" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"></TextBlock>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -80,7 +90,7 @@
                 <TabItem GotFocus="Load_HourlyForecast" Header="Danas">
                     <ScrollViewer>
                         <StackPanel Name="TemperaturaDanasStack">
-                            <TextBlock Text="Novi Sad" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18"></TextBlock>
+                            <TextBlock Text="{Binding TrenutnaLokacija}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18"></TextBlock>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -114,7 +124,7 @@
                 <TabItem Header="Narednih 5 dana">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
-                            <TextBlock Text="Novi Sad" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18"></TextBlock>
+                            <TextBlock Text="{Binding TrenutnaLokacija}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18"></TextBlock>
                             <ListView HorizontalContentAlignment="Stretch">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>

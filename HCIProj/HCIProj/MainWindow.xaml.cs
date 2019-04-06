@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.IO;
 namespace HCIProj
 {
     /// <summary>
@@ -28,9 +29,10 @@ namespace HCIProj
         private int _maxTemp;
         private int _temp;
         private string _icon;
+        private string _omiljeni;
 
       
-        public ObservableCollection<string> Lokacije { get; set; }
+        public ObservableCollection<Lokacija> Lokacije { get; set; }
         public HourlyForecast tempPoSatima;
 
 
@@ -98,24 +100,45 @@ namespace HCIProj
                 }
             }
         }
+        public String Omiljeni {
+            get {
+                return _omiljeni;
+            }
+            set {
+                if (value != _omiljeni)
+                {
+                    _omiljeni = value;
+                    OnPropertyChanged("Omiljeni");
+                }
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = this;
-
-
             Temp = 0;
             MinTemp = 0;
             MaxTemp = 0;
-            Lokacije = new ObservableCollection<string>();
-            Lokacija l1 = new Lokacija();
-            l1.Naziv = "Novi Sad";
-            l1.Neomiljena = false;
-            Lokacija l2 = new Lokacija();
-            l2.Naziv = "Beograd";
-            l2.Neomiljena = true;
-            Lokacije.Add("Novi Sad");
-            Lokacije.Add("Beograd");
+            Lokacije = new ObservableCollection<Lokacija>();
+            using (StreamReader reader = new StreamReader("Lokacije.json"))
+            {
+                string text = reader.ReadToEnd();
+                Lokacije = JsonConvert.DeserializeObject<ObservableCollection<Lokacija>>(text);
+                
+            }
+            foreach(Lokacija l in Lokacije)
+            {
+                if (l.Omiljena)
+                {
+                    Omiljeni = "Omiljena lokacija je: " + l.Naziv;
+                    TrenutnaLokacija = l.Naziv;
+                    LoadCurrent();
+                    LoadHourly();
+                    break;
+                }
+            }
+            this.LokacijeListaEl.ItemsSource = Lokacije;
+            
             //tempPoSatima = new HourlyForecast();
         }
 
@@ -131,13 +154,11 @@ namespace HCIProj
 
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
-
-        private void Load_CurrentWeather(object sender, RoutedEventArgs e)
+        public void LoadCurrent()
         {
-
             using (WebClient webClient = new WebClient())
             {
-                string url = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=8e17202912490c577a70504fd76979f3";
+                string url = "http://api.openweathermap.org/data/2.5/weather?q=" +TrenutnaLokacija+"&APPID=8e17202912490c577a70504fd76979f3";
                 string json = webClient.DownloadString(url);
                 var result = JsonConvert.DeserializeObject<WeatherInfo.root>(json);
 
@@ -147,7 +168,7 @@ namespace HCIProj
                 var min = output.main.temp_min;
                 var max = output.main.temp_max;
                 result.weather[0].icon = "http://openweathermap.org/img/w/" + result.weather[0].icon + ".png";
-                
+
 
                 int temp = Convert.ToInt32(Convert.ToDouble(cTemp) - 273.15);
                 int min_temp = Convert.ToInt32(Convert.ToDouble(min) - 273.15);
@@ -159,17 +180,28 @@ namespace HCIProj
                 Icon_ = result.weather[0].icon;
             }
         }
+        private void Load_CurrentWeather(object sender, RoutedEventArgs e)
+        {
+
+            LoadCurrent();
+        }
 
         private void Load_HourlyForecast(object sender, RoutedEventArgs e)
         {
+            LoadHourly();
+
+        }
+        public void LoadHourly()
+        {
             using (WebClient webClient = new WebClient())
             {
-                string url = "http://api.openweathermap.org/data/2.5/forecast/hourly?q=London,us&units=metric&mode=xml,uk&APPID=8e17202912490c577a70504fd76979f3";
+                string url = "http://api.openweathermap.org/data/2.5/forecast/hourly?q="+TrenutnaLokacija+"&units=metric&mode=xml,uk&APPID=8e17202912490c577a70504fd76979f3";
+       
                 string json = webClient.DownloadString(url);
                 var result = JsonConvert.DeserializeObject<HourlyForecast>(json);
 
                 tempPoSatima = result;
-                
+
 
                 foreach (var w in tempPoSatima.list)
                 {
@@ -184,11 +216,81 @@ namespace HCIProj
                 }
                 danas.ItemsSource = tempPoSatima.list.Take(12);
             }
-
         }
 
+        private void WriteLokacije()
+        {
+            using (StreamWriter writer = new StreamWriter("Lokacije.json"))
+            {
+                string lokString = JsonConvert.SerializeObject(Lokacije);
+                writer.Write(lokString);
+
+            }
+        }
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            TrenutnaLokacija = ((TextBlock)sender).Text;
+            LoadCurrent();
+            LoadHourly();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Lokacija l = new Lokacija();
+            l.Naziv = this.TrenutnaLokacijaUnos.Text;
+            l.Omiljena = false;
+            Lokacije.Add(l);
+            WriteLokacije();
+
+        }
+        private void Button_Click_Omiljeno(object sender, RoutedEventArgs e)
+        {
+            int i = 0;
+            foreach (Lokacija l in Lokacije)
+            {
+                if (l.Omiljena)
+                {
+                    l.Omiljena = false;
+                    break;
+                }
+                i++;
+            }
+            i = 0;
+            foreach (Lokacija l in Lokacije)
+            {
+                if (l.Naziv == TrenutnaLokacija)
+                {
+                    l.Omiljena = true;
+                    Lokacija lok = (Lokacija)LokacijeListaEl.Items.GetItemAt(i);
+                    Omiljeni = "Omiljena lokacija je: " + lok.Naziv;
+                    break;
+                }
+                i++;
+            }
+            WriteLokacije();
+        }
+
+        private void Button_Click_Obrisi(object sender, RoutedEventArgs e)
+        {
+            foreach (Lokacija l in Lokacije)
+            {
+                if (l.Naziv == TrenutnaLokacija)
+                {
+                    Lokacije.Remove(l);
+                    break;
+                }
+            }
+            if (Lokacije.Count > 0)
+            {
+                TrenutnaLokacija = Lokacije.First().Naziv;
+                LoadCurrent();
+                LoadHourly();
+            }
+            else
+            {
+                TrenutnaLokacija = "";
+            }
+            WriteLokacije();
 
         }
     }

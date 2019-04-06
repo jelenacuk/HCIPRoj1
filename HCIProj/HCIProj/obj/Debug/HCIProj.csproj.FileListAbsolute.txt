@@ -88,3 +88,25 @@ C:\Users\Admin\Desktop\HCIProjekat\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.g.
 C:\Users\Admin\Desktop\HCIProjekat\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.Properties.Resources.resources
 C:\Users\Admin\Desktop\HCIProjekat\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.csproj.GenerateResource.Cache
 C:\Users\Admin\Desktop\HCIProjekat\HCIPRoj1\HCIProj\HCIProj\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.csprojAssemblyReference.cache
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\App.g.cs
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj_MarkupCompile.cache
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.exe
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.pdb
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\MainWindow.g.cs
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj_MarkupCompile.lref
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\bin\Debug\HCIProj.exe.config
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\bin\Debug\HCIProj.exe
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\bin\Debug\HCIProj.pdb
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\bin\Debug\System.Net.Http.Formatting.dll
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\bin\Debug\System.Net.Http.Formatting.xml
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\MainWindow.baml
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.g.resources
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.Properties.Resources.resources
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.csproj.GenerateResource.cache
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.csproj.CoreCompileInputs.cache
+C:\Users\Mile\Desktop\New folder (2)\HCIPRoj1\HCIProj\HCIProj\obj\Debug\HCIProj.csproj.CopyComplete

@@ -9,6 +9,6 @@ namespace HCIProj
     public class Lokacija
     {
         public string Naziv { get; set; }
-        public bool Neomiljena { get; set; }
+        public bool Omiljena { get; set; }
     }
 }
