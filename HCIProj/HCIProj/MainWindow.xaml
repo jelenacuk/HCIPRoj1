@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HCIProj"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinWidth="250" MinHeight="200">
+        Title="MainWindow" Height="450" Width="800" MinWidth="250" MinHeight="200"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Border Padding="10">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -22,46 +23,23 @@
                     <TextBox Text="Unesi Lokaciju"></TextBox>
                     <Button Grid.Column="1" Content="Dodaj"></Button>
                 </Grid>
-                
-                <Grid Margin=" 0 0 2 2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Novi Sad"></TextBlock>
-                    <Button Grid.Column="1" Content="Obrisi"></Button>
-                </Grid>
-                <Grid  Margin=" 0 0 2 2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Beograd"></TextBlock>
-                    <Button Grid.Column="1" Content="Obrisi"></Button>
-                    <Button Margin="3 0 0 0 " Grid.Column="2" Content="Omiljeno"></Button>
-                </Grid>
-                <Grid Margin=" 0 0 2 2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Paris"></TextBlock>
-                    <Button Grid.Column="1" Content="Obrisi"></Button>
-                    <Button Margin="3 0 0 0 " Grid.Column="2" Content="Omiljeno"></Button>
-                </Grid>
-                <Grid Margin=" 0 0 2 2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Moscow"></TextBlock>
-                    <Button Grid.Column="1" Content="Obrisi"></Button>
-                    <Button Margin="3 0 0 0 " Grid.Column="2" Content="Omiljeno"></Button>
-                </Grid>
+
+                <ListView ItemsSource="{Binding Path=Lokacije}" HorizontalContentAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid  Margin=" 0 0 2 2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="tekst" MouseDown="TextBlock_MouseDown"/>
+                                <Button Grid.Column="1" Content="Obrisi"/>
+                                <Button Margin="3 0 0 0 " Grid.Column="2" Content="Omiljeno" Visibility="Visible" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackPanel>
             
             <TabControl Grid.Column="1" >
@@ -81,10 +59,20 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Name="temperatura" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="30" Text="24C"></TextBlock>
+                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="30" Text="{Binding Temp}"></TextBlock>
                             <Image VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" Grid.Column="1" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
                         </Grid>
-                        <TextBlock Name="minMax" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="Min 12C / Max 24C"></TextBlock>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Name="minTrenutno" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="{Binding MinTemp}"></TextBlock>
+                            <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="/"></TextBlock>
+                            <TextBlock Grid.Column="2" Name="maxTrenutno" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding MaxTemp}"></TextBlock>
+
+                        </Grid>
 
                     </StackPanel>
                     
@@ -101,96 +89,22 @@
                                 <TextBlock Text="Izmereno u 12:00"></TextBlock>
                                 <Button Grid.Column="1" Margin="10 0 0 0" Content="Osvezi"></Button>
                             </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="00:00 H"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="03:00 H"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="06:00 H"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="09:00 H"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="12:00 H"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="15:00 H"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="18:00 H"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="21:00 H"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="24:00 H"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
+                            <ListView ItemsSource="{Binding temperaturaDanasList}" HorizontalContentAlignment="Stretch">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="30 30 0 0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Vreme}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Trenutno}"/>
+                                            <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
@@ -198,57 +112,22 @@
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <TextBlock Text="Novi Sad" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18"></TextBlock>
-
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Ponedeljak"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Utorak"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Sreda"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Cetvrtak"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
-                            <Grid Margin="40 40 2 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Petak"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="22C"></TextBlock>
-                                <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
-                            </Grid>
+                            <ListView HorizontalContentAlignment="Stretch">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="40 40 2 2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Ponedeljak"></TextBlock>
+                                            <TextBlock Grid.Column="1" Text="22C"></TextBlock>
+                                            <Image Grid.Column="2" Width="20" Source="http://icons.iconarchive.com/icons/icons-land/weather/256/Sunny-icon.png"></Image>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
