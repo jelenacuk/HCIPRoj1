@@ -326,8 +326,9 @@ namespace HCIProj
                         if (nextDate.Day == today.Day + i)
                         {
                             nextDayMin = l.main.temp_min;
+                            Console.WriteLine(nextDate.DayOfWeek);
                             nextDayMax = l.main.temp_max;
-                            dayOfWeek = nextDate.DayOfWeek.ToString();
+                            dayOfWeek = TranslateDayOfTheWeek(nextDate.DayOfWeek.ToString());
                             break;
                         }
                     }
@@ -375,6 +376,28 @@ namespace HCIProj
 
         }
 
+        private string TranslateDayOfTheWeek(string eng)
+        {
+            switch (eng.ToString())
+            {
+                case "Monday":
+                    return "Ponedeljak";
+                case "Tuesday":
+                    return "Utorak";
+                case "Wednesday":
+                    return "Sreda";
+                case "Thursday":
+                    return "Četvrtak";
+                case "Friday":
+                    return "Petak";
+                case "Saturday":
+                    return "Subota";
+                case "Sunday":
+                    return "Nedelja";
+            }
+            return "Greška!";
+        }
+
         private void WriteLokacije()
         {
             using (StreamWriter writer = new StreamWriter("Lokacije.json"))
@@ -394,6 +417,7 @@ namespace HCIProj
             else { ipLokacija = false; }
             LoadCurrent();
             LoadHourly();
+            Load_NFD();
             LastUpdateDate = DateTime.Now;
             LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
 
@@ -455,6 +479,7 @@ namespace HCIProj
                 else { ipLokacija = false; }
                 LoadCurrent();
                 LoadHourly();
+                Load_NFD();
                 LastUpdateDate = DateTime.Now;
                 LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
 
@@ -479,6 +504,7 @@ namespace HCIProj
                     {
                         LoadCurrent();
                         LoadHourly();
+                        Load_NFD();
                     });
                 }
                                 

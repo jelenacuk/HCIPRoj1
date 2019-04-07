@@ -135,10 +135,10 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Day of the week"/>
-                                <TextBlock Grid.Column="1" Text="Min temperature"/>
-                                <TextBlock Grid.Column="2" Text="Max temperature"/>
-                                <TextBlock Grid.Column="3" Text="Weather"/>
+                                <TextBlock Text="Dan u nedelji"/>
+                                <TextBlock Grid.Column="1" Text="Minimalna temp"/>
+                                <TextBlock Grid.Column="2" Text="Maksimalna temp"/>
+                                <TextBlock Grid.Column="3" Text="Vreme" Margin="44,0,-43,0"/>
                             </Grid>
                             <ListView Name ="nextFD"  HorizontalContentAlignment="Stretch">
                                 <ListView.DataContext>
