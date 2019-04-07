@@ -33,6 +33,9 @@ namespace HCIProj
         private string _omiljeni;
         private DateTime _lastUpdate;
         private string _lastupdatestring;
+        private bool ipLokacija;
+        private double latitude;
+        private double longitude;
         public DateTime LastUpdateDate {
             get {
                 return _lastUpdate;
@@ -158,6 +161,11 @@ namespace HCIProj
                 {
                     Omiljeni = "Omiljena lokacija je: " + l.Naziv;
                     TrenutnaLokacija = l.Naziv;
+                    if (TrenutnaLokacija == "Trenutna Lokacija")
+                    {
+                        ipLokacija = true;
+                    }
+                    else { ipLokacija = false; }
                     LoadCurrent();
                     LoadHourly();
                     break;
@@ -187,7 +195,17 @@ namespace HCIProj
         {
             using (WebClient webClient = new WebClient())
             {
-                string url = "http://api.openweathermap.org/data/2.5/weather?q=" +TrenutnaLokacija+"&APPID=8e17202912490c577a70504fd76979f3";
+                string url;
+                if (ipLokacija)
+                {
+                    string ipJson = webClient.DownloadString("http://ip-api.com/json/");
+                    var ipResult = JsonConvert.DeserializeObject<IPLoc>(ipJson);
+                    url = "http://api.openweathermap.org/data/2.5/weather?lat="+ ipResult.lat +"&lon=" + ipResult.lon +"&APPID=8e17202912490c577a70504fd76979f3";
+                }
+                else
+                {
+                    url = "http://api.openweathermap.org/data/2.5/weather?q=" + TrenutnaLokacija + "&APPID=8e17202912490c577a70504fd76979f3";
+                }
                 string json = webClient.DownloadString(url);
                 var result = JsonConvert.DeserializeObject<WeatherInfo.root>(json);
 
@@ -227,8 +245,18 @@ namespace HCIProj
         {
             using (WebClient webClient = new WebClient())
             {
-                string url = "http://api.openweathermap.org/data/2.5/forecast/hourly?q="+TrenutnaLokacija+"&units=metric&mode=xml,uk&APPID=8e17202912490c577a70504fd76979f3";
-       
+                string url;
+                if (ipLokacija)
+                {
+                    string ipJson = webClient.DownloadString("http://ip-api.com/json/");
+                    var ipResult = JsonConvert.DeserializeObject<IPLoc>(ipJson);
+                    url = "http://api.openweathermap.org/data/2.5/forecast/hourly?lat=" + ipResult.lat + "&lon=" + ipResult.lon + "&units=metric&mode=xml,uk&APPID=8e17202912490c577a70504fd76979f3";
+                }
+                else
+                {
+                    url = "http://api.openweathermap.org/data/2.5/forecast/hourly?q=" + TrenutnaLokacija + "&units=metric&mode=xml,uk&APPID=8e17202912490c577a70504fd76979f3";
+
+                }
                 string json = webClient.DownloadString(url);
                 var result = JsonConvert.DeserializeObject<HourlyForecast>(json);
 
@@ -342,6 +370,11 @@ namespace HCIProj
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
             TrenutnaLokacija = ((TextBlock)sender).Text;
+            if (TrenutnaLokacija == "Trenutna Lokacija")
+            {
+                ipLokacija = true;
+            }
+            else { ipLokacija = false; }
             LoadCurrent();
             LoadHourly();
             LastUpdateDate = DateTime.Now;
@@ -398,6 +431,11 @@ namespace HCIProj
             if (Lokacije.Count > 0)
             {
                 TrenutnaLokacija = Lokacije.First().Naziv;
+                if (TrenutnaLokacija == "Trenutna Lokacija")
+                {
+                    ipLokacija = true;
+                }
+                else { ipLokacija = false; }
                 LoadCurrent();
                 LoadHourly();
                 LastUpdateDate = DateTime.Now;
