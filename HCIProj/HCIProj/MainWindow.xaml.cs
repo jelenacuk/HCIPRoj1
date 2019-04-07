@@ -26,21 +26,28 @@ namespace HCIProj
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private string _trenutnaLokacija;
-        private int _minTemp;
-        private int _maxTemp;
-        private int _temp;
+        private string _minTemp;
+        private string _maxTemp;
+        private string _temp;
         private string _icon;
+        private string _humidity;
+        private string _wind;
+        private string _clouds;
+        private string _rain;
         private string _omiljeni;
         private DateTime _lastUpdate;
         private string _lastupdatestring;
         private bool ipLokacija;
         private double latitude;
         private double longitude;
-        public DateTime LastUpdateDate {
-            get {
+        public DateTime LastUpdateDate
+        {
+            get
+            {
                 return _lastUpdate;
             }
-            set {
+            set
+            {
                 if (value != _lastUpdate)
                 {
                     _lastUpdate = value;
@@ -48,14 +55,17 @@ namespace HCIProj
                 }
             }
         }
-        public string LastUpdateString {
-            get {
+        public string LastUpdateString
+        {
+            get
+            {
                 return _lastupdatestring;
             }
-            set {
+            set
+            {
                 if (value != _lastupdatestring)
                 {
-                   _lastupdatestring = value;
+                    _lastupdatestring = value;
                     OnPropertyChanged("LastUpdateString");
                 }
             }
@@ -65,11 +75,14 @@ namespace HCIProj
         public HourlyForecast tempPoSatima;
 
 
-        public String TrenutnaLokacija {
-            get {
+        public String TrenutnaLokacija
+        {
+            get
+            {
                 return _trenutnaLokacija;
             }
-            set {
+            set
+            {
                 if (value != _trenutnaLokacija)
                 {
                     _trenutnaLokacija = value;
@@ -77,11 +90,79 @@ namespace HCIProj
                 }
             }
         }
-        public int MinTemp {
-            get {
+
+        public String Rain
+        {
+            get
+            {
+                return _rain;
+            }
+            set
+            {
+                if (value != _rain)
+                {
+                    _rain = value;
+                    OnPropertyChanged("Rain");
+                }
+            }
+        }
+
+        public String Humidity
+        {
+            get
+            {
+                return _humidity;
+            }
+            set
+            {
+                if (value != _humidity)
+                {
+                    _humidity = value;
+                    OnPropertyChanged("Humidity");
+                }
+            }
+        }
+        public String Wind
+        {
+            get
+            {
+                return _wind;
+            }
+            set
+            {
+                if (value != _wind)
+                {
+                    _wind = value;
+                    OnPropertyChanged("Wind");
+                }
+            }
+        }
+
+        public String Clouds
+        {
+            get
+            {
+                return _clouds;
+            }
+            set
+            {
+                if (value != _clouds)
+                {
+                    _clouds = value;
+                    OnPropertyChanged("Clouds");
+                }
+            }
+        }
+
+
+        public string MinTemp
+        {
+            get
+            {
                 return _minTemp;
             }
-            set {
+            set
+            {
                 if (value != _minTemp)
                 {
                     _minTemp = value;
@@ -89,11 +170,14 @@ namespace HCIProj
                 }
             }
         }
-        public int MaxTemp {
-            get {
+        public string MaxTemp
+        {
+            get
+            {
                 return _maxTemp;
             }
-            set {
+            set
+            {
                 if (value != _maxTemp)
                 {
                     _maxTemp = value;
@@ -101,11 +185,14 @@ namespace HCIProj
                 }
             }
         }
-        public int Temp {
-            get {
+        public string Temp
+        {
+            get
+            {
                 return _temp;
             }
-            set {
+            set
+            {
                 if (value != _temp)
                 {
                     _temp = value;
@@ -129,11 +216,14 @@ namespace HCIProj
                 }
             }
         }
-        public String Omiljeni {
-            get {
+        public String Omiljeni
+        {
+            get
+            {
                 return _omiljeni;
             }
-            set {
+            set
+            {
                 if (value != _omiljeni)
                 {
                     _omiljeni = value;
@@ -145,17 +235,17 @@ namespace HCIProj
         {
             InitializeComponent();
             this.DataContext = this;
-            Temp = 0;
-            MinTemp = 0;
-            MaxTemp = 0;
+            Temp = "";
+            MinTemp = "";
+            MaxTemp = "";
             Lokacije = new ObservableCollection<Lokacija>();
             using (StreamReader reader = new StreamReader("Lokacije.json"))
             {
                 string text = reader.ReadToEnd();
                 Lokacije = JsonConvert.DeserializeObject<ObservableCollection<Lokacija>>(text);
-                
+
             }
-            foreach(Lokacija l in Lokacije)
+            foreach (Lokacija l in Lokacije)
             {
                 if (l.Omiljena)
                 {
@@ -186,7 +276,7 @@ namespace HCIProj
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
-                
+
             }
         }
 
@@ -201,27 +291,30 @@ namespace HCIProj
                 {
                     string ipJson = webClient.DownloadString("http://ip-api.com/json/");
                     var ipResult = JsonConvert.DeserializeObject<IPLoc>(ipJson);
-                    url = "http://api.openweathermap.org/data/2.5/weather?lat="+ ipResult.lat +"&lon=" + ipResult.lon +"&APPID=8e17202912490c577a70504fd76979f3";
+                    url = "http://api.openweathermap.org/data/2.5/weather?lat=" + ipResult.lat + "&lon=" + ipResult.lon + "&APPID=8e17202912490c577a70504fd76979f3";
                 }
                 else
                 {
-                    url = "http://api.openweathermap.org/data/2.5/weather?q=" + TrenutnaLokacija + "&APPID=8e17202912490c577a70504fd76979f3";
+                    url = "http://api.openweathermap.org/data/2.5/weather?q=" + TrenutnaLokacija + "&units=metric&APPID=8e17202912490c577a70504fd76979f3";
                 }
                 string json = webClient.DownloadString(url);
                 var result = JsonConvert.DeserializeObject<WeatherInfo.root>(json);
 
                 WeatherInfo.root output = result;
 
-                var cTemp = output.main.temp;
+                // var cTemp = output.main.temp;
                 var min = output.main.temp_min;
                 var max = output.main.temp_max;
                 result.weather[0].icon = "http://openweathermap.org/img/w/" + result.weather[0].icon + ".png";
 
 
-                int temp = Convert.ToInt32(Convert.ToDouble(cTemp) - 273.15);
-                int min_temp = Convert.ToInt32(Convert.ToDouble(min) - 273.15);
-                int max_temp = Convert.ToInt32(Convert.ToDouble(max) - 273.15);
+                string temp = output.main.temp.Split('.')[0] + "˚C";
+                string min_temp = output.main.temp_min.Split('.')[0] + "˚C"; ;
+                string max_temp = output.main.temp_max.Split('.')[0] + "˚C"; ;
 
+                Humidity = output.main.humidity + "%";
+                Wind = output.wind.speed + "m/s";
+                Clouds = output.clouds.all + "%";
                 Temp = temp;
                 MinTemp = min_temp;
                 MaxTemp = max_temp;
@@ -246,7 +339,7 @@ namespace HCIProj
         {
             Load_NFD();
         }
-            public void LoadHourly()
+        public void LoadHourly()
         {
             using (WebClient webClient = new WebClient())
             {
@@ -326,9 +419,8 @@ namespace HCIProj
                         if (nextDate.Day == today.Day + i)
                         {
                             nextDayMin = l.main.temp_min;
-                            Console.WriteLine(nextDate.DayOfWeek);
                             nextDayMax = l.main.temp_max;
-                            dayOfWeek = TranslateDayOfTheWeek(nextDate.DayOfWeek.ToString());
+                            dayOfWeek = nextDate.DayOfWeek.ToString();
                             break;
                         }
                     }
@@ -376,28 +468,6 @@ namespace HCIProj
 
         }
 
-        private string TranslateDayOfTheWeek(string eng)
-        {
-            switch (eng.ToString())
-            {
-                case "Monday":
-                    return "Ponedeljak";
-                case "Tuesday":
-                    return "Utorak";
-                case "Wednesday":
-                    return "Sreda";
-                case "Thursday":
-                    return "Četvrtak";
-                case "Friday":
-                    return "Petak";
-                case "Saturday":
-                    return "Subota";
-                case "Sunday":
-                    return "Nedelja";
-            }
-            return "Greška!";
-        }
-
         private void WriteLokacije()
         {
             using (StreamWriter writer = new StreamWriter("Lokacije.json"))
@@ -417,7 +487,6 @@ namespace HCIProj
             else { ipLokacija = false; }
             LoadCurrent();
             LoadHourly();
-            Load_NFD();
             LastUpdateDate = DateTime.Now;
             LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
 
@@ -479,7 +548,6 @@ namespace HCIProj
                 else { ipLokacija = false; }
                 LoadCurrent();
                 LoadHourly();
-                Load_NFD();
                 LastUpdateDate = DateTime.Now;
                 LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
 
@@ -496,18 +564,17 @@ namespace HCIProj
             while (true)
             {
                 DateTime last = LastUpdateDate;
-                
-                    LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+
+                LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
                 if (last.AddMinutes(10) >= DateTime.Now)
                 {
                     this.Dispatcher.Invoke(() =>
                     {
                         LoadCurrent();
                         LoadHourly();
-                        Load_NFD();
                     });
                 }
-                                
+
                 Thread.Sleep(600000);
             }
 
