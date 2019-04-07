@@ -14,6 +14,8 @@ namespace HCIProj
             public string dayOfWeek { get; set; }
             public double temp_min { get; set; }
             public double temp_max { get; set; }
+            public string temp_minStr { get; set; }
+            public string temp_maxStr { get; set; }
         }
 
         public class weather

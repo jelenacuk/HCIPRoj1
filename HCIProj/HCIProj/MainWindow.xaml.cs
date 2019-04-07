@@ -168,6 +168,7 @@ namespace HCIProj
                     else { ipLokacija = false; }
                     LoadCurrent();
                     LoadHourly();
+                    Load_NFD();
                     break;
                 }
             }
@@ -241,7 +242,11 @@ namespace HCIProj
             LoadHourly();
 
         }
-        public void LoadHourly()
+        private void Load_NextFiveDays(object sender, RoutedEventArgs e)
+        {
+            Load_NFD();
+        }
+            public void LoadHourly()
         {
             using (WebClient webClient = new WebClient())
             {
@@ -280,11 +285,22 @@ namespace HCIProj
 
         }
 
-        private void Load_NextFiveDays(object sender, RoutedEventArgs e)
+        public void Load_NFD()
         {
             using (WebClient webClient = new WebClient())
             {
-                string url = "http://api.openweathermap.org/data/2.5/forecast?q=" + TrenutnaLokacija + "&APPID=8e17202912490c577a70504fd76979f3&units=metric";
+                string url;
+                if (ipLokacija)
+                {
+                    string ipJson = webClient.DownloadString("http://ip-api.com/json/");
+                    var ipResult = JsonConvert.DeserializeObject<IPLoc>(ipJson);
+                    url = "http://api.openweathermap.org/data/2.5/forecast?lat=" + ipResult.lat + "&lon=" + ipResult.lon + "&units=metric&mode=xml,uk&APPID=8e17202912490c577a70504fd76979f3";
+                }
+                else
+                {
+                    url = "http://api.openweathermap.org/data/2.5/forecast?q=" + TrenutnaLokacija + "&units=metric&mode=xml,uk&APPID=8e17202912490c577a70504fd76979f3";
+
+                }
                 string json = webClient.DownloadString(url);
                 var result = JsonConvert.DeserializeObject<NextFiveDays.weatherForecast>(json);
 
@@ -342,10 +358,11 @@ namespace HCIProj
                     NextFiveDays.list li = new NextFiveDays.list();
                     NextFiveDays.main main = new NextFiveDays.main();
                     NextFiveDays.weather w = new NextFiveDays.weather();
-                    main.temp_min = nextDayMin;
-                    main.temp_max = nextDayMax;
+
+                    main.temp_minStr = nextDayMin.ToString().Split(',')[0] + "˚C";
+                    main.temp_maxStr = nextDayMax.ToString().Split(',')[0] + "˚C";
                     main.dayOfWeek = dayOfWeek;
-                    w.icon = optimalWeather;
+                    w.icon = "http://openweathermap.org/img/w/" + optimalWeather + ".png";
                     li.main = main;
                     li.weather = new List<NextFiveDays.weather>();
                     li.weather.Add(w);

@@ -51,17 +51,19 @@
                     </Grid>
                 </StackPanel>
             </StackPanel>
-            
+
             <TabControl Grid.Column="1" >
                 <TabItem  Header="Trenutno" GotFocus ="Load_CurrentWeather"  >
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="136*"></ColumnDefinition>
+                                <ColumnDefinition Width="15*"/>
+                                <ColumnDefinition Width="228*"/>
+                                <ColumnDefinition Width="190*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding LastUpdateString}"></TextBlock>
-                            <Button Grid.Column="1" Margin="10 0 0 0" Content="Osvezi"></Button>
+                            <TextBlock Text="{Binding LastUpdateString}" Grid.ColumnSpan="3"></TextBlock>
+                            <Button Grid.Column="3" Margin="10 0 0 0" Content="Osvezi"></Button>
                         </Grid>
                         <TextBlock x:Name ="lokacija_" Text="{Binding TrenutnaLokacija}" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"></TextBlock>
                         <Grid>
@@ -85,7 +87,7 @@
                         </Grid>
 
                     </StackPanel>
-                    
+
                 </TabItem>
                 <TabItem GotFocus="Load_HourlyForecast" Header="Danas">
                     <ScrollViewer>
@@ -152,8 +154,8 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="{Binding main.dayOfWeek}"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding main.temp_min}"/>
-                                            <TextBlock Grid.Column="2" Text="{Binding main.temp_max}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding main.temp_minStr}"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding main.temp_maxStr}"/>
                                             <Image Grid.Column="3" Width="40" Source="{Binding weather[0].icon}"/>
                                         </Grid>
                                     </DataTemplate>
