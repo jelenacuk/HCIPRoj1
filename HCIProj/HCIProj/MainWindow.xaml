@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HCIProj"
         mc:Ignorable="d"
-        Title="Vremenska Prognoza" Height="450" Width="800" MinWidth="250" MinHeight="200"
+        Title="Vremenska Prognoza" Height="450" Width="900" MinWidth="250" MinHeight="250"
         FontSize="14"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
@@ -21,119 +21,120 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <StackPanel Margin="-5,0,4.6,0">
-                <TextBlock Text="Lokacije" Margin="0,0,-0.4,0"></TextBlock>
-                <Grid Margin="10 10 10 10">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid Margin="2,0,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBox Name="TrenutnaLokacijaUnos" GotFocus="TrenutnaLokacijaUnos_GotFocus" Text="Unesi Lokaciju" Margin="-8,0,0,0.2"></TextBox>
-                    <Button Grid.Column="1" Content="Dodaj" Click="Button_Click"></Button>
-                </Grid>
-                <TextBlock FontStyle="Italic" Text="{Binding Omiljeni}"></TextBlock>
-                <ListView Name="LokacijeListaEl" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Lokacije}" Margin="0 20 0 0" >
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid  Margin=" 0 0 2 2">
+                    <StackPanel Margin="2,0,0,0">
+                        <TextBlock Text="Lokacije" Margin="0,0,-0.4,0"></TextBlock>
+                        <Grid Margin="0 10 0 10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="TrenutnaLokacijaUnos" GotFocus="TrenutnaLokacijaUnos_GotFocus" Text="Unesi Lokaciju" Margin="0,0,0,0"></TextBox>
+                            <Button Grid.Column="1" Content="Dodaj" Click="Button_Click"></Button>
+                        </Grid>
+                        <TextBlock FontStyle="Italic" Text="{Binding Omiljeni}"></TextBlock>
+                        <ListView Name="LokacijeListaEl" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Lokacije}" Margin="0 20 0 0" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Naziv}" MouseDown="TextBlock_MouseDown"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <StackPanel>
+                            <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Margin="0 50 0 0" Text="{Binding TrenutnaLokacija}"></TextBlock>
+                            <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Naziv}" MouseDown="TextBlock_MouseDown"/>
+                                <Button Grid.Column="0" Content="Obriši" Click="Button_Click_Obrisi"  Margin="0,0,3,0"/>
+                                <Button Margin="3 0 0 0 " Grid.Column="1" Content="Omiljeno" Click="Button_Click_Omiljeno"/>
                             </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <StackPanel>
-                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold" Margin="0 50 0 0" Text="{Binding TrenutnaLokacija}"></TextBlock>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="Obriši" Click="Button_Click_Obrisi" Grid.ColumnSpan="2" Margin="0,0,96.6,0.4"/>
-                        <Button Margin="3 0 0 0 " Grid.Column="1" Content="Omiljeno" Click="Button_Click_Omiljeno"/>
-                    </Grid>
-                </StackPanel>
-            </StackPanel>
-
-            <TabControl Grid.Column="1" Margin="0.4,0,-0.4,0" >
-                <TabItem  Header="Trenutno" GotFocus ="Load_CurrentWeather"  >
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding LastUpdateString}" Grid.ColumnSpan="3"></TextBlock>
-                            <Button Grid.Column="1" Margin="15 0 0 0" Content="Osveži" Click="Button_Osvezi"></Button>
-                        </Grid>
-                        <TextBlock x:Name ="lokacija_" Text="{Binding TrenutnaLokacija}" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"></TextBlock>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="30" Text="{Binding Temp}"></TextBlock>
-                            <Image VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" Grid.Column="1" Source="{Binding Icon_}"></Image>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock FontWeight="Normal" Grid.Column="0"  HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="Min"></TextBlock>
-                            <TextBlock FontWeight="Normal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text=":"></TextBlock>
-                            <TextBlock FontWeight="Normal" Grid.Column="2" Name="minTemp" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding MinTemp}"></TextBlock>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock FontWeight="Normal" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="Maks"></TextBlock>
-                            <TextBlock FontWeight="Normal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text=":"></TextBlock>
-                            <TextBlock FontWeight="Normal" Grid.Column="2" Name="maxTemp" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding MaxTemp}"></TextBlock>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock FontWeight="Normal" Grid.Column="0"  HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="Vlažnost"></TextBlock>
-                            <TextBlock FontWeight="Normal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text=":"></TextBlock>
-                            <TextBlock FontWeight="Normal" Grid.Column="2" Name="vlaznost" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding Humidity}"></TextBlock>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock FontWeight="Normal" Grid.Column="0"  HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="Vetar"></TextBlock>
-                            <TextBlock FontWeight="Normal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text=":"></TextBlock>
-                            <TextBlock FontWeight="Normal" Grid.Column="2" Name="vetar" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding Wind}"></TextBlock>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock FontWeight="Normal" Grid.Column="0"  HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="Oblačnost"></TextBlock>
-                            <TextBlock FontWeight="Normal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text=":"></TextBlock>
-                            <TextBlock FontWeight="Normal" Grid.Column="2" Name="oblacnost" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding Clouds}"></TextBlock>
-                        </Grid>
-
-
+                        </StackPanel>
                     </StackPanel>
-
+                </Grid>
+                
+            </ScrollViewer>
+            <TabControl Grid.Column="1" Margin="3,0,0,0" >
+                <TabItem  Header="Trenutno" GotFocus ="Load_CurrentWeather"  >
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding LastUpdateString}" Grid.ColumnSpan="3"></TextBlock>
+                                <Button Grid.Column="1" Margin="15 0 0 0" Content="Osveži" Click="Button_Osvezi"></Button>
+                            </Grid>
+                            <TextBlock x:Name ="lokacija_" Text="{Binding TrenutnaLokacija}" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"></TextBlock>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="30" Text="{Binding Temp}"></TextBlock>
+                                <Image VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" Grid.Column="1" Source="{Binding Icon_}"></Image>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock FontWeight="Normal" Grid.Column="0"  HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="Min"></TextBlock>
+                                <TextBlock FontWeight="Normal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text=":"></TextBlock>
+                                <TextBlock FontWeight="Normal" Grid.Column="2" Name="minTemp" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding MinTemp}"></TextBlock>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock FontWeight="Normal" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="Maks"></TextBlock>
+                                <TextBlock FontWeight="Normal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text=":"></TextBlock>
+                                <TextBlock FontWeight="Normal" Grid.Column="2" Name="maxTemp" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding MaxTemp}"></TextBlock>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock FontWeight="Normal" Grid.Column="0"  HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="Vlažnost"></TextBlock>
+                                <TextBlock FontWeight="Normal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text=":"></TextBlock>
+                                <TextBlock FontWeight="Normal" Grid.Column="2" Name="vlaznost" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding Humidity}"></TextBlock>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock FontWeight="Normal" Grid.Column="0"  HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="Vetar"></TextBlock>
+                                <TextBlock FontWeight="Normal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text=":"></TextBlock>
+                                <TextBlock FontWeight="Normal" Grid.Column="2" Name="vetar" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding Wind}"></TextBlock>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock FontWeight="Normal" Grid.Column="0"  HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Text="Oblačnost"></TextBlock>
+                                <TextBlock FontWeight="Normal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text=":"></TextBlock>
+                                <TextBlock FontWeight="Normal" Grid.Column="2" Name="oblacnost" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Text="{Binding Clouds}"></TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
                 </TabItem>
                 <TabItem GotFocus="Load_HourlyForecast" Header="Danas">
-                    <ScrollViewer>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Name="TemperaturaDanasStack">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -177,7 +178,7 @@
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Header="Narednih 5 dana" GotFocus ="Load_NextFiveDays" >
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -188,7 +189,7 @@
                                 <Button Grid.Column="1" Margin="15 0 0 0" Content="Osveži"  Click="Button_Osvezi"></Button>
                             </Grid>
                             <TextBlock Text="{Binding TrenutnaLokacija}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18"></TextBlock>
-                            <Grid Margin="30 30 0 0">
+                            <Grid Margin="10 30 0 0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
@@ -196,10 +197,10 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Dan u nedelji"/>
-                                <TextBlock Grid.Column="1" Text="Minimalna temp"/>
-                                <TextBlock Grid.Column="2" Text="Maksimalna temp"/>
-                                <TextBlock Grid.Column="3" Text="Vreme" Margin="44,0,-43,0"/>
+                                <TextBlock HorizontalAlignment="Center" Text="Dan u nedelji"/>
+                                <TextBlock HorizontalAlignment="Center" Grid.Column="1" Text="Minimalna temp"/>
+                                <TextBlock HorizontalAlignment="Center" Grid.Column="2" Text="Maksimalna temp"/>
+                                <TextBlock HorizontalAlignment="Center" Grid.Column="3" Text="Vreme" Margin="2,0,0,0"/>
                             </Grid>
                             <ListView Name ="nextFD"  HorizontalContentAlignment="Stretch">
                                 <ListView.DataContext>
@@ -207,17 +208,17 @@
                                 </ListView.DataContext>
                                 <ListView.ItemTemplate >
                                     <DataTemplate>
-                                        <Grid Margin="30 30 0 0">
+                                        <Grid Margin="15 30 0 0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding main.dayOfWeek}"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding main.temp_minStr}"/>
-                                            <TextBlock Grid.Column="2" Text="{Binding main.temp_maxStr}"/>
-                                            <Image Grid.Column="3" Width="40" Source="{Binding weather[0].icon}"/>
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding main.dayOfWeek}"/>
+                                            <TextBlock HorizontalAlignment="Center" Grid.Column="1" Text="{Binding main.temp_minStr}"/>
+                                            <TextBlock HorizontalAlignment="Center" Grid.Column="2" Text="{Binding main.temp_maxStr}"/>
+                                            <Image HorizontalAlignment="Center" Grid.Column="3" Width="40" Source="{Binding weather[0].icon}"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
