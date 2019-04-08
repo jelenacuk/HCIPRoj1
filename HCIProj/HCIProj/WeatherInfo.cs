@@ -54,6 +54,7 @@ namespace HCIProj
             public clouds clouds { get; set; }
             public wind wind { get; set; }
             public rain rain { get; set; }
+            public int cod { get; set; }
 
         }
 

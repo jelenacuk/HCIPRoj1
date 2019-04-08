@@ -291,7 +291,7 @@ namespace HCIProj
                 {
                     string ipJson = webClient.DownloadString("http://ip-api.com/json/");
                     var ipResult = JsonConvert.DeserializeObject<IPLoc>(ipJson);
-                    url = "http://api.openweathermap.org/data/2.5/weather?lat=" + ipResult.lat + "&lon=" + ipResult.lon + "&APPID=8e17202912490c577a70504fd76979f3";
+                    url = "http://api.openweathermap.org/data/2.5/weather?lat=" + ipResult.lat + "&lon=" + ipResult.lon + "&units=metric&APPID=8e17202912490c577a70504fd76979f3";
                 }
                 else
                 {
@@ -320,7 +320,7 @@ namespace HCIProj
                 MaxTemp = max_temp;
                 Icon_ = result.weather[0].icon;
             }
-            LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+            LastUpdateString = DateTime.Now.ToString("dd/MM/yyyy H:mm");
 
         }
         private void Load_CurrentWeather(object sender, RoutedEventArgs e)
@@ -374,7 +374,7 @@ namespace HCIProj
                 }
                 danas.ItemsSource = tempPoSatima.list.Take(12);
             }
-            LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+            LastUpdateString = DateTime.Now.ToString("dd/MM/yyyy H:mm");
 
         }
 
@@ -452,9 +452,37 @@ namespace HCIProj
                     NextFiveDays.main main = new NextFiveDays.main();
                     NextFiveDays.weather w = new NextFiveDays.weather();
 
-                    main.temp_minStr = nextDayMin.ToString().Split(',')[0] + "˚C";
-                    main.temp_maxStr = nextDayMax.ToString().Split(',')[0] + "˚C";
-                    main.dayOfWeek = dayOfWeek;
+                    main.temp_minStr = (Convert.ToInt32(nextDayMin)).ToString().Split(',')[0] + "˚C";
+                    main.temp_maxStr = (Convert.ToInt32(nextDayMax)).ToString().Split(',')[0] + "˚C";
+                    if (dayOfWeek == "Monday")
+                    {
+                        main.dayOfWeek = "Ponedeljak";
+                    }
+                    else if (dayOfWeek == "Tuesday")
+                    {
+                        main.dayOfWeek = "Utorak";
+                    }
+                    else if (dayOfWeek == "Wednesday")
+                    {
+                        main.dayOfWeek = "Sreda";
+                    }
+                    else if (dayOfWeek == "Thursday")
+                    {
+                        main.dayOfWeek = "Četvrtak";
+                    }
+                    else if (dayOfWeek == "Friday")
+                    {
+                        main.dayOfWeek = "Petak";
+                    }
+                    else if (dayOfWeek == "Saturday")
+                    {
+                        main.dayOfWeek = "Subota";
+                    }
+                    else if (dayOfWeek == "Sunday")
+                    {
+                        main.dayOfWeek = "Nedelja";
+                    }
+                    //main.dayOfWeek = dayOfWeek;
                     w.icon = "http://openweathermap.org/img/w/" + optimalWeather + ".png";
                     li.main = main;
                     li.weather = new List<NextFiveDays.weather>();
@@ -487,19 +515,51 @@ namespace HCIProj
             else { ipLokacija = false; }
             LoadCurrent();
             LoadHourly();
+            Load_NFD();
             LastUpdateDate = DateTime.Now;
-            LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+            LastUpdateString = DateTime.Now.ToString("dd/MM/yyyy H:mm");
 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            //Dodavanje lokacije
             Lokacija l = new Lokacija();
             l.Naziv = this.TrenutnaLokacijaUnos.Text;
             l.Omiljena = false;
-            Lokacije.Add(l);
-            WriteLokacije();
+            if (l.Naziv == "Trenutna Lokacija")
+            {
+                Lokacije.Add(l);
+                WriteLokacije();
+            }
+            else
+            {
+                try
+                {
+                    using (WebClient webClient = new WebClient())
+                    {
+                        string url = "http://api.openweathermap.org/data/2.5/weather?q=" + l.Naziv + "&units=metric&APPID=8e17202912490c577a70504fd76979f3";
+                        string json = webClient.DownloadString(url);
+                        var result = JsonConvert.DeserializeObject<WeatherInfo.root>(json);
 
+                        WeatherInfo.root output = result;
+                        if (output.cod != 200)
+                        {
+                            MessageBox.Show("Uneli ste nepostojecu lokaciju");
+                        }
+                        else
+                        {
+                            Lokacije.Add(l);
+                            WriteLokacije();
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Uneli ste nepostojecu lokaciju");
+                }
+                     
+            }
         }
         private void Button_Click_Omiljeno(object sender, RoutedEventArgs e)
         {
@@ -549,7 +609,7 @@ namespace HCIProj
                 LoadCurrent();
                 LoadHourly();
                 LastUpdateDate = DateTime.Now;
-                LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+                LastUpdateString = DateTime.Now.ToString("dd/MM/yyyy H:mm");
 
             }
             else
@@ -565,19 +625,37 @@ namespace HCIProj
             {
                 DateTime last = LastUpdateDate;
 
-                LastUpdateString = DateTime.Now.ToString("MM/dd/yyyy H:mm");
+                LastUpdateString = DateTime.Now.ToString("dd/MM/yyyy H:mm");
                 if (last.AddMinutes(10) >= DateTime.Now)
                 {
                     this.Dispatcher.Invoke(() =>
                     {
                         LoadCurrent();
                         LoadHourly();
+                        Load_NFD();
                     });
                 }
 
                 Thread.Sleep(600000);
             }
 
+        }
+
+        private void Button_Osvezi(object sender, RoutedEventArgs e)
+        {
+            LoadCurrent();
+            LoadHourly();
+            Load_NFD();
+            LastUpdateString = DateTime.Now.ToString("dd/MM/yyyy H:mm");
+            LastUpdateDate = DateTime.Now;
+        }
+
+        private void TrenutnaLokacijaUnos_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (this.TrenutnaLokacijaUnos.Text == "Unesi Lokaciju")
+            {
+                this.TrenutnaLokacijaUnos.Text = "";
+            }
         }
     }
 }

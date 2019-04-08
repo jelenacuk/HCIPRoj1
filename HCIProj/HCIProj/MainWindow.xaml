@@ -28,7 +28,7 @@
                         <ColumnDefinition Width="2*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBox Name="TrenutnaLokacijaUnos" Text="Unesi Lokaciju" Margin="-8,0,0,0.2"></TextBox>
+                    <TextBox Name="TrenutnaLokacijaUnos" GotFocus="TrenutnaLokacijaUnos_GotFocus" Text="Unesi Lokaciju" Margin="-8,0,0,0.2"></TextBox>
                     <Button Grid.Column="1" Content="Dodaj" Click="Button_Click"></Button>
                 </Grid>
                 <TextBlock FontStyle="Italic" Text="{Binding Omiljeni}"></TextBlock>
@@ -51,7 +51,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="Obrisi" Click="Button_Click_Obrisi" Grid.ColumnSpan="2" Margin="0,0,96.6,0.4"/>
+                        <Button Grid.Column="0" Content="Obriši" Click="Button_Click_Obrisi" Grid.ColumnSpan="2" Margin="0,0,96.6,0.4"/>
                         <Button Margin="3 0 0 0 " Grid.Column="1" Content="Omiljeno" Click="Button_Click_Omiljeno"/>
                     </Grid>
                 </StackPanel>
@@ -62,13 +62,11 @@
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="136*"></ColumnDefinition>
-                                <ColumnDefinition Width="15*"/>
-                                <ColumnDefinition Width="228*"/>
-                                <ColumnDefinition Width="190*"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding LastUpdateString}" Grid.ColumnSpan="3"></TextBlock>
-                            <Button Grid.Column="3" Margin="10 0 0 0" Content="Osvezi"></Button>
+                            <TextBlock Grid.Column="0" Text="{Binding LastUpdateString}" Grid.ColumnSpan="3"></TextBlock>
+                            <Button Grid.Column="1" Margin="15 0 0 0" Content="Osveži" Click="Button_Osvezi"></Button>
                         </Grid>
                         <TextBlock x:Name ="lokacija_" Text="{Binding TrenutnaLokacija}" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"></TextBlock>
                         <Grid>
@@ -139,11 +137,11 @@
                         <StackPanel Name="TemperaturaDanasStack">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding LastUpdateString}"></TextBlock>
-                                <Button Grid.Column="1" Margin="10 0 0 0" Content="Osvezi"></Button>
+                                <Button Grid.Column="1" Margin="15 0 0 0" Content="Osveži"  Click="Button_Osvezi"></Button>
                             </Grid>
                             <TextBlock Text="{Binding TrenutnaLokacija}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18"></TextBlock>
                             <Grid Margin="30 30 0 0">
@@ -181,6 +179,14 @@
                 <TabItem Header="Narednih 5 dana" GotFocus ="Load_NextFiveDays" >
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding LastUpdateString}" Grid.ColumnSpan="3"></TextBlock>
+                                <Button Grid.Column="1" Margin="15 0 0 0" Content="Osveži"  Click="Button_Osvezi"></Button>
+                            </Grid>
                             <TextBlock Text="{Binding TrenutnaLokacija}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18"></TextBlock>
                             <Grid Margin="30 30 0 0">
                                 <Grid.ColumnDefinitions>
